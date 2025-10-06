@@ -92,16 +92,16 @@ python_setup(){
 }
 
 golang_setup(){
-    dnf install golang -y
+    dnf install golang -y &>>$Logs_File
     Validation $? "Install Golang"
 
-    go mod init dispatch
+    go mod init dispatch &>>$Logs_File
     Validation $? "Golang  Mod Init Dispatch Dependenices"
 
-    go get 
+    go get &>>$Logs_File
     Validation $? "Golang Get Dependenices"
 
-    go build
+    go build &>>$Logs_File
     Validation $? "Golang Build Dependenices"
 }
 
