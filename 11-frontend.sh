@@ -50,7 +50,7 @@ Validation $? "Download Frontend Zip"
 cd /usr/share/nginx/html 
 Validation $? "Change Dir to /usr/share/nginx/html"
 
-rm -rf /usr/share/nginx/html
+rm -rf /usr/share/nginx/html/*
 Validation $? "Change Dir to /usr/share/nginx/html"
 
 unzip /tmp/frontend.zip &>>$Logs_File
