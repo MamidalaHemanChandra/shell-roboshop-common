@@ -120,8 +120,8 @@ systemd_setup(){
 }
 
 restart_app(){
-    systemctl restart catalogue
-    Validation $? "Restart Catalogue"
+    systemctl restart $name
+    Validation $? "Restart $name"
 }
 
 total_time(){
