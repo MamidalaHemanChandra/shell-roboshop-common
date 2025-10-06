@@ -26,7 +26,6 @@ Validation(){
     fi
 }
 
-
 dnf module disable nginx -y &>>$Logs_File
 Validation $? "Disable Nginx"
 
@@ -34,7 +33,7 @@ dnf module enable nginx:1.24 -y &>>$Logs_File
 Validation $? "Enable Nginx 1.24"
 
 dnf install nginx -y &>>$Logs_File
-Validation $? "Install Nginx 1.24"
+Validation $? "Install Nginx"
 
 systemctl enable nginx &>>$Logs_File
 Validation $? "Enable Nginx" 
@@ -52,7 +51,7 @@ cd /usr/share/nginx/html
 Validation $? "Change Dir to /usr/share/nginx/html"
 
 unzip /tmp/frontend.zip &>>$Logs_File
-Validation $? "Unzip Frontend"
+Validation $? "Download Frontend Unzip"
 
 cp $LocScript/nginx.conf /etc/nginx/nginx.conf &>>$Logs_File
 Validation $? "Nginx Conf Setup"
@@ -64,3 +63,12 @@ Validation $? "Restart Nginx"
 End_Time=$(date +%s)
 Total_Time=$(( $End_Time - $Start_Time ))
 echo " Taken by script to Execute is : $Total_Time "
+
+
+
+
+
+
+
+
+
