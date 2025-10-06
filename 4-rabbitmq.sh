@@ -20,7 +20,7 @@ rabbitmqctl list_users | grep -w roboshop &>>$$Logs_File
 if [ $? -ne 0 ];then
     rabbitmqctl add_user roboshop roboshop123 &>>$Logs_File
     rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$Logs_File
-    Validation $? "add_user roboshop"
+    Validation $? "Add user roboshop"
 else
     echo -e "Already Roboshop user exist"
 fi
