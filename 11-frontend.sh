@@ -26,37 +26,37 @@ Validation(){
     fi
 }
 
-dnf module disable nginx -y
+dnf module disable nginx -y &>>$Logs_File
 Validation $? "Disable Nginx"
 
-dnf module enable nginx:1.24 -y
+dnf module enable nginx:1.24 -y &>>$Logs_File
 Validation $? "Enable Nginx 1.24"
 
-dnf install nginx -y
+dnf install nginx -y &>>$Logs_File
 Validation $? "Install Nginx"
 
-systemctl enable nginx
+systemctl enable nginx &>>$Logs_File
 Validation $? "Enable Nginx" 
 
-systemctl start nginx 
+systemctl start nginx &>>$Logs_File
 Validation $? "Start Nginx"
 
-rm -rf /usr/share/nginx/html/*
+rm -rf /usr/share/nginx/html/* &>>$Logs_File
 Validation $? "Remove Default Html"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$Logs_File
 Validation $? "Download Frontend"
 
-cd /usr/share/nginx/html 
+cd /usr/share/nginx/html &>>$Logs_File
 Validation $? "Move to Nginx Dir"
 
-unzip /tmp/frontend.zip
+unzip /tmp/frontend.zip &>>$Logs_File
 Validation $? "Unzip Frontend"
 
-cp $LocScript/nginx.conf /etc/nginx/nginx.conf
+cp $LocScript/nginx.conf /etc/nginx/nginx.conf &>>$Logs_File
 Validation $? "Nginx Conf Setup"
 
-systemctl restart nginx
+systemctl restart nginx &>>$Logs_File
 Validation $? "Restart Nginx"
 
 
