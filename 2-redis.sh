@@ -20,6 +20,6 @@ systemctl enable redis &>>$Logs_File
 Validation $? "Enable Redis"
 
 systemctl start redis &>>$Logs_File
-Validation $? "Start Redis"#!/bin/bash
+Validation $? "Start Redis"
 
 total_time
