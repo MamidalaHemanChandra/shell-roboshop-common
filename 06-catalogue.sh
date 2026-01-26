@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e 
-
 source ./common.sh
 app_name=catalogue
 
