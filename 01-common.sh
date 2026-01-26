@@ -8,13 +8,12 @@ N="\e[0m"
 Script_Loc=$PWD
 Mongodb_Host=mongodb.heman.icu
 Mysql_Host=mysql.heman.icu
+Start_time=$(date +%s)
 
 Logs_Folder="/var/log/shell-script"
 mkdir -p $Logs_Folder
 Script_Name=$(echo $0 | cut -d "." -f1)
 Logs="$Logs_Folder/$Script_Name.log"
-
-Start_time=$(date +%s)
 
 echo -e "$G Script Started executed at : $(date) $N"  | tee -a $Logs
 
@@ -92,7 +91,7 @@ app_setup(){
     VALIDATE $? "delete exisiting code"
 
     unzip /tmp/$app_name.zip &>>$Logs
-    VALIDATE $? "unzip application code"
+    VALIDATE $? "unzip $app_name code"
 }
 
 systemd_setup(){
