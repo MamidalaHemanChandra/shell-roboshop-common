@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./common
+source ./common.sh
 app_name=rabbitmq-server
 
 check_root
