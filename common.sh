@@ -97,7 +97,7 @@ python_setup() {
 }
 
 systemd_setup() {
-    cp $Script_Loc/catalogue.service /etc/systemd/system/catalogue.service &>>$Logs
+    cp $Script_Loc/$app_name.service /etc/systemd/system/$app_name.service &>>$Logs
     VALIDATE $? "Setup SystemD Catalogue Service"
 
     systemctl daemon-reload &>>$Logs
