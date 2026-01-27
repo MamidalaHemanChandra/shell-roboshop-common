@@ -28,8 +28,3 @@ fi
 restart
 
 script_time
-
-
-
-
-

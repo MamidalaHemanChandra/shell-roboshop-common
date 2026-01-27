@@ -10,7 +10,7 @@ Mongodb_Host=mongodb.heman.icu
 Mysql_Host=mysql.heman.icu
 Start_time=$(date +%s)
 
-Logs_Folder="/var/log/shell-script"
+Logs_Folder="/var/log/shell-roboshop"
 mkdir -p $Logs_Folder
 Script_Name=$(echo $0 | cut -d "." -f1)
 Logs="$Logs_Folder/$Script_Name.log"
@@ -23,8 +23,8 @@ check_root(){
         echo -e "$R Error:: Take the Root Access $N" | tee -a $Logs
         exit 1
     fi
-
 }
+
 
 VALIDATE() {
     if [ $1 -ne 0 ];then
@@ -34,6 +34,33 @@ VALIDATE() {
         echo -e "$2 $G SUCCESS $N" | tee -a $Logs
     fi
 }
+
+app_setup() {
+    id roboshop &>>$Logs
+    if [ $? -ne 0 ];then
+        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$Logs
+        VALIDATE $? "Add application or system User"
+    else
+        echo -e "Roboshop user already exists $Y SKIPPING $N" | tee -a $Logs
+    fi
+
+    mkdir -p /app &>>$Logs
+    VALIDATE $? "setup an app directory"
+
+    curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>>$Logs
+    VALIDATE $? "Download the $app_name application code"
+
+    cd /app
+    VALIDATE $? "Move to app directory"
+
+    rm -rf /app/* &>>$Logs
+    VALIDATE $? "delete exisiting $app_name code"
+
+    unzip /tmp/$app_name.zip &>>$Logs
+    VALIDATE $? "unzip $app_name code"
+}
+
+
 
 nodejs_setup(){
     dnf module disable nodejs -y &>>$Logs
@@ -49,7 +76,7 @@ nodejs_setup(){
     VALIDATE $? "download the dependencies"
 }
 
-java_setup(){
+java_setup() {
     dnf install maven -y &>>$Logs
     VALIDATE $? "Install Maven"
 
@@ -60,42 +87,17 @@ java_setup(){
     VALIDATE $? "Move Shipping Jar to Target"
 }
 
-python_setup(){
+python_setup() {
     dnf install python3 gcc python3-devel -y &>>$Logs
     VALIDATE $? "Install Python"
- 
+
     pip3 install -r requirements.txt &>>$Logs
     VALIDATE $? "download the dependencies"
+
 }
 
-app_setup(){
-
-    id roboshop &>>$Logs
-    if [ $? -ne 0 ];then
-        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$Logs
-        VALIDATE $? "Add application or system User"
-    else
-        echo -e "Roboshop user already exists $Y SKIPPING $N" | tee -a $Logs
-    fi
-
-    mkdir -p /app &>>$Logs
-    VALIDATE $? "setup an app directory"
-
-    curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>>$Logs
-    VALIDATE $? "Download the application code"
-
-    cd /app
-    VALIDATE $? "Move to app directory"
-
-    rm -rf /app/* &>>$Logs
-    VALIDATE $? "delete exisiting code"
-
-    unzip /tmp/$app_name.zip &>>$Logs
-    VALIDATE $? "unzip $app_name code"
-}
-
-systemd_setup(){
-    cp $Script_Loc/$app_name.service /etc/systemd/system/$app_name.service &>>$Logs
+systemd_setup() {
+    cp $Script_Loc/catalogue.service /etc/systemd/system/catalogue.service &>>$Logs
     VALIDATE $? "Setup SystemD Catalogue Service"
 
     systemctl daemon-reload &>>$Logs
@@ -108,11 +110,10 @@ systemd_setup(){
     VALIDATE $? "Start $app_name service"
 }
 
-restart(){
+restart() {
     systemctl restart $app_name &>>$Logs
-    VALIDATE $? "Restart the $app_name"
+    VALIDATE $? "Restart the $app_name Service"
 }
-
 
 script_time(){
     End_time=$(date +%s)

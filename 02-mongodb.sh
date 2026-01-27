@@ -5,7 +5,7 @@ app_name=mongod
 
 check_root
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$Logs
+cp $Script_Loc/mongo.repo /etc/yum.repos.d/mongo.repo &>>$Logs
 VALIDATE $? "Setup the MongoDB repo file"
 
 dnf install mongodb-org -y &>>$Logs

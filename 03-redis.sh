@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ./common.sh
-app_name=redis
 
 check_root
 
@@ -14,7 +13,7 @@ VALIDATE $? "Enable required redis 7 module"
 dnf install redis -y &>>$Logs
 VALIDATE $? "Install redis"
 
-sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode yes/c protected-mode no' /etc/redis/redis.conf &>>$Logs
+sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode yes/ c protected-mode no' /etc/redis/redis.conf &>>$Logs
 VALIDATE $? "change the redis config"
 
 systemctl enable redis &>>$Logs
@@ -22,8 +21,6 @@ VALIDATE $? "Enable Redis Servic"
 
 systemctl start redis &>>$Logs
 VALIDATE $? "Start Redis Servic"
-
-restart
 
 netstat -lntp
 

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ./common.sh
-app_name=rabbitmq-server
 
 check_root
 
@@ -23,8 +22,6 @@ else
     rabbitmqctl add_user roboshop roboshop123
     rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
 fi
-
-restart
 
 netstat -lntp
 

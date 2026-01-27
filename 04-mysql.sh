@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source ./common.sh
-app_name=mysqld
 
 check_root
 
@@ -16,8 +15,6 @@ VALIDATE $? "Start MySQL Servic"
 
 mysql_secure_installation --set-root-pass RoboShop@1
 VALIDATE $? "Setup Root Password"
-
-restart
 
 netstat -lntp
 
